@@ -37,51 +37,60 @@ class StationProvider(Thread):
     def main_loop(self):
         while self.alive:
             if self.people_came:
-                # обработка новых людей
-                if self.no_train:
-                    self.people_dict['waiting_hall'] += round(self.people_num * 0.66)
-                    p_to_platform = self.people_num - self.people_dict['waiting_hall']
-                    self.people_dict['platform_1'] += round(p_to_platform * 0.5)
-                    self.people_dict['platform_2'] += round(p_to_platform * 0.2)
-                    self.people_dict['platform_3'] += \
-                        p_to_platform - self.people_dict['platform_1'] - self.people_dict['platform_2']
-                else:
-                    self.people_dict['platform_1'] += round(self.people_num * 0.5)
-                    self.people_dict['platform_2'] += round(self.people_num * 0.2)
-                    self.people_dict['platform_3'] += \
-                        self.people_num - self.people_dict['platform_1'] - self.people_dict['platform_2']
+                self.people_came_func()
             if self.arriving:
-                for i in range(0, 3):
-                    self.people_dict[''.join(['platform_', str(i + 1)])] += \
-                        self.people_dict[''.join(['train_', str(i + 1)])]
-                    self.people_dict[''.join(['people_from_train_', str(i + 1)])] = \
-                        self.people_dict[''.join(['train_', str(i + 1)])]
-                    self.people_dict[''.join(['train_', str(i + 1)])] = 0
-                self.arriving = False
-                self.first = True
+                self.arriving_func()
             if self.boarding:
-                for i in range(0, 3):
-                    if self.first:
-                        # приехавшие люди уходят
-                        self.people_dict[''.join(['platform_', str(i + 1)])] -= \
-                            self.people_dict[''.join(['people_from_train_', str(i + 1)])]
-                        self.people_dict[''.join(['people_from_train_', str(i + 1)])] = 0
-                        # люди из зала идут на платформы
-                        if self.people_dict['waiting_hall'] != 0:
-                            self.people_dict['platform_1'] += round(self.people_dict['waiting_hall'] * 0.5)
-                            self.people_dict['platform_2'] += round(self.people_dict['waiting_hall'] * 0.2)
-                            self.people_dict['platform_3'] += \
-                                self.people_dict['waiting_hall'] - self.people_dict['platform_1'] - \
-                                self.people_dict['platform_2']
-                            self.people_dict['waiting_hall'] = 0
-                        self.first = False
-                    # люди садятся в поезд
-                    free = self.train_capacity[i] - self.people_dict[''.join(['train_', str(i + 1)])]
-                    if free != 0:
-                        if self.people_dict[''.join(['platform_', str(i + 1)])] <= free:
-                            self.people_dict[''.join(['train_', str(i + 1)])] += \
-                                self.people_dict[''.join(['platform_', str(i + 1)])]
-                            self.people_dict[''.join(['platform_', str(i + 1)])] = 0
-                        else:
-                            self.people_dict[''.join(['train_', str(i + 1)])] += free
-                            self.people_dict[''.join(['platform_', str(i + 1)])] -= free
+                self.boarding_func()
+
+    def people_came_func(self):
+        # обработка новых людей
+        if self.no_train:
+            self.people_dict['waiting_hall'] += round(self.people_num * 0.66)
+            p_to_platform = self.people_num - self.people_dict['waiting_hall']
+            self.people_dict['platform_1'] += round(p_to_platform * 0.5)
+            self.people_dict['platform_2'] += round(p_to_platform * 0.2)
+            self.people_dict['platform_3'] += \
+                p_to_platform - self.people_dict['platform_1'] - self.people_dict['platform_2']
+        else:
+            self.people_dict['platform_1'] += round(self.people_num * 0.5)
+            self.people_dict['platform_2'] += round(self.people_num * 0.2)
+            self.people_dict['platform_3'] += \
+                self.people_num - self.people_dict['platform_1'] - self.people_dict['platform_2']
+
+    def arriving_func(self):
+        for i in range(0, 3):
+            self.people_dict[''.join(['platform_', str(i + 1)])] += \
+                self.people_dict[''.join(['train_', str(i + 1)])]
+            self.people_dict[''.join(['people_from_train_', str(i + 1)])] = \
+                self.people_dict[''.join(['train_', str(i + 1)])]
+            self.people_dict[''.join(['train_', str(i + 1)])] = 0
+        self.arriving = False
+        self.first = True
+
+    def boarding_func(self):
+        for i in range(0, 3):
+            if self.first:
+                # приехавшие люди уходят
+                self.people_dict[''.join(['platform_', str(i + 1)])] -= \
+                    self.people_dict[''.join(['people_from_train_', str(i + 1)])]
+                self.people_dict[''.join(['people_from_train_', str(i + 1)])] = 0
+                # люди из зала идут на платформы
+                if self.people_dict['waiting_hall'] != 0:
+                    self.people_dict['platform_1'] += round(self.people_dict['waiting_hall'] * 0.5)
+                    self.people_dict['platform_2'] += round(self.people_dict['waiting_hall'] * 0.2)
+                    self.people_dict['platform_3'] += \
+                        self.people_dict['waiting_hall'] - self.people_dict['platform_1'] - \
+                        self.people_dict['platform_2']
+                    self.people_dict['waiting_hall'] = 0
+                self.first = False
+            # люди садятся в поезд
+            free = self.train_capacity[i] - self.people_dict[''.join(['train_', str(i + 1)])]
+            if free != 0:
+                if self.people_dict[''.join(['platform_', str(i + 1)])] <= free:
+                    self.people_dict[''.join(['train_', str(i + 1)])] += \
+                        self.people_dict[''.join(['platform_', str(i + 1)])]
+                    self.people_dict[''.join(['platform_', str(i + 1)])] = 0
+                else:
+                    self.people_dict[''.join(['train_', str(i + 1)])] += free
+                    self.people_dict[''.join(['platform_', str(i + 1)])] -= free
