@@ -45,5 +45,3 @@ class PeopleGenerator(Thread):
             people = int(random.normalvariate(1000, 50) * self.num_of_people[6])    # сделала 6 для примера
             pflag = 1  # хз как надо делать флаг
             time.sleep(600)
-
-
