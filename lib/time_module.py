@@ -10,6 +10,10 @@ class TimeGen:
         self.boarding = False  # началась посадка
         self.left = False  # поезд уехал
 
+    sleeps = [600, 2400, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 600, 2400, 2400, 2400,
+              2400, 2400, 2400, 2400, 600, 0, 0, 0, 0, 0, 0, 0, 0, 0, 600, 600,
+              600, 2400]
+
     def _train(self):
         # этот блок описывает события вокруг каждого поезда
         self.arriving_soon = True
@@ -22,24 +26,8 @@ class TimeGen:
 
     def gen_time(self):
         # симуляция начинается в 5:00
-        time.sleep(600 * self.speed)
-        self._train()
-        time.sleep(2400 * self.speed)
-        for _ in range(10):
+        for i in range(len(self.sleeps)):
+            time.sleep(self.sleeps[i] * self.speed)
             self._train()
-        time.sleep(600 * self.speed)
-        self._train()
-        for _ in range(7):
-            time.sleep(2400 * self.speed)
-            self._train()
-        time.sleep(600 * self.speed)
-        self._train()
-        for _ in range(9):
-            self._train()
-        for _ in range(3):
-            time.sleep(600 * self.speed)
-            self._train()
-        time.sleep(2400 * self.speed)
-        self._train()
         time.sleep(1800 * self.speed)
         # симуляция заканчивается в 23:30
