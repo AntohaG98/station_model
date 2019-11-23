@@ -15,6 +15,9 @@ class TimeGen:
               2400, 2400, 2400, 2400, 600, 0, 0, 0, 0, 0, 0, 0, 0, 0, 600, 600,
               600, 2400]
 
+    def hours_minutes(self):
+        return self.sim_time//3600, (self.sim_time//60) % 60
+
     def _train(self):
         # этот блок описывает события вокруг каждого поезда
         self.arriving_soon = True
