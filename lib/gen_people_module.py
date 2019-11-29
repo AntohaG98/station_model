@@ -39,8 +39,11 @@ class PeopleGenerator(Thread):
 
     def generate(self):
         while self.alive:
-            if self.provider.people_time:
-                # тут нужно проверять сколько сейчас времени в нашей симуляции и умножать на соттв. k из словаря
+            if self.provider.people_time and self.alive:
                 self.provider.people_num = int(random.normalvariate(500, 50) * self.num_of_people[self.provider.hours])
                 self.provider.people_came = True
-                time.sleep(600 * self.provider.speed)
+                if self.alive:
+                    time.sleep(600 * self.provider.speed)
+
+    def quit(self):
+        self.alive = False
