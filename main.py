@@ -36,7 +36,7 @@ class Gui:
 
         self.station_provider = StationProvider(self)
         self.time_gen = TimeGen(self.station_provider)
-        self.people_gen = PeopleGenerator(self.station_provider)
+        self.people_gen = PeopleGenerator(self.station_provider, self.time_gen)
 
         self.station_provider.start()
         self.time_gen.start()
@@ -71,10 +71,6 @@ class Gui:
                                         width=35, relief=tkinter.GROOVE, bd=2, font='arial 14')
         self.info_label.pack(side='left', padx=10)
 
-        # self.pause_image = ImageTk.PhotoImage(Image.open("play.png"))
-        # pause_but = tkinter.Button(info_frame, image=self.pause_image, bg='snow', relief=tkinter.GROOVE, bd=2)
-        # pause_but.pack(side='right', padx=10, fill="both", expand="yes")
-
         # Зал ожидания
         wait_label = tkinter.Label(waiting_frame, text='Зал ожидания', width=20, bg='lavender')
         wait_label.pack(side='top')
@@ -99,7 +95,7 @@ class Gui:
         self.train_2 = tkinter.Label(train_frame, width=20, bg='lavender', font='arial 14')
         self.train_2.grid(row=5, column=0, sticky='w', pady=2)
 
-        pl3_label = tkinter.Label(train_frame, text='Платформа 1', bg='lavender')
+        pl3_label = tkinter.Label(train_frame, text='Платформа 3', bg='lavender')
         pl3_label.grid(row=6, column=0, sticky='w')
         self.pl_3 = tkinter.Label(train_frame, text='0', width=20, relief=tkinter.GROOVE, bd=2,
                                   bg='snow', font='arial 14')

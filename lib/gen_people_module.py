@@ -32,10 +32,12 @@ class PeopleGenerator(Thread):
         23: 0.5
     }
 
-    def __init__(self, provider):
+    def __init__(self, provider, time_gen):
         Thread.__init__(self, target=self.generate)
         self.provider = provider
+        self.time_gen = time_gen
         self.alive = True
+        self.sim_time = 18000
 
     def generate(self):
         while self.alive:
@@ -44,6 +46,8 @@ class PeopleGenerator(Thread):
                 self.provider.people_came = True
                 if self.alive:
                     time.sleep(600 * self.provider.speed)
+                    self.sim_time += 600
+                    self.provider.hours, self.provider.minutes = self.sim_time//3600, (self.sim_time//60) % 60
 
     def quit(self):
         self.alive = False
