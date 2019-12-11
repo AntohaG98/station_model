@@ -58,13 +58,13 @@ class StationProvider(Thread):
             self.sheet.cell(row=self.row_num, column=2).value = message
 
     def save_station_state(self):
-        self.sheet.cell(row=self.row_num, column=4).value = str(self.people_dict['waiting_hall'])
-        self.sheet.cell(row=self.row_num, column=5).value = str(self.people_dict['platform_1'])
-        self.sheet.cell(row=self.row_num, column=6).value = str(self.people_dict['platform_2'])
-        self.sheet.cell(row=self.row_num, column=7).value = str(self.people_dict['platform_3'])
-        self.sheet.cell(row=self.row_num, column=8).value = str(self.people_dict['train_1'])
-        self.sheet.cell(row=self.row_num, column=9).value = str(self.people_dict['train_2'])
-        self.sheet.cell(row=self.row_num, column=10).value = str(self.people_dict['train_3'])
+        self.sheet.cell(row=self.row_num, column=4).value = self.people_dict['waiting_hall']
+        self.sheet.cell(row=self.row_num, column=5).value = self.people_dict['platform_1']
+        self.sheet.cell(row=self.row_num, column=6).value = self.people_dict['platform_2']
+        self.sheet.cell(row=self.row_num, column=7).value = self.people_dict['platform_3']
+        self.sheet.cell(row=self.row_num, column=8).value = self.people_dict['train_1']
+        self.sheet.cell(row=self.row_num, column=9).value = self.people_dict['train_2']
+        self.sheet.cell(row=self.row_num, column=10).value = self.people_dict['train_3']
 
     def main_loop(self):
         while self.alive:

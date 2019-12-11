@@ -42,9 +42,12 @@ class PeopleGenerator(Thread):
     def generate(self):
         while self.alive:
             if self.provider.people_time and self.alive:
-                self.provider.people_num = int(random.normalvariate(500, 50) * self.num_of_people[self.provider.hours])
-                self.provider.people_came = True
+                if self.sim_time <= 82800:
+                    self.provider.people_num = int(random.normalvariate(500, 50) * self.num_of_people[self.provider.hours])
+                    self.provider.people_came = True
                 if self.alive:
+                    if self.sim_time == 84600:
+                        self.sim_time = 18000
                     time.sleep(600 * self.provider.speed)
                     self.sim_time += 600
                     self.provider.hours, self.provider.minutes = self.sim_time//3600, (self.sim_time//60) % 60
